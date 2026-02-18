@@ -1,20 +1,36 @@
+import requests
+from bs4 import BeautifulSoup
+
+
 def search_jobs(role, location):
-    """
-    This is a placeholder.
-    Tomorrow we connect real APIs.
-    """
+    print("🌐 Fetching real jobs from the web...\n")
 
-    print("🌐 Simulating job search...\n")
+    query = f"{role} {location}".replace(" ", "%20")
+    url = f"https://www.indeed.com/jobs?q={query}"
 
-    return [
-        {
-            "title": "Junior Data Analyst",
-            "company": "TechNova",
-            "description": "Looking for Python, Pandas, SQL, and basic analytics."
-        },
-        {
-            "title": "AI Intern",
-            "company": "NextGen AI",
-            "description": "Need Python, Machine Learning basics, APIs, and problem solving."
-        }
-    ]
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "lxml")
+
+    jobs = []
+
+    for card in soup.select(".job_seen_beacon")[:5]:
+        title = card.select_one("h2")
+        company = card.select_one(".companyName")
+        summary = card.select_one(".job-snippet")
+
+        if title and company and summary:
+            jobs.append({
+                "title": title.text.strip(),
+                "company": company.text.strip(),
+                "description": summary.text.strip()
+            })
+
+    if not jobs:
+        print("⚠ Could not scrape jobs (site blocking). Using fallback data.")
+        return []
+
+    return jobs
