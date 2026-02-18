@@ -1,10 +1,19 @@
 import os
+import re
+
+
+def safe_filename(text):
+    # Remove invalid Windows filename characters
+    return re.sub(r'[<>:"/\\|?*]', '', text)
 
 
 def build_application(job, insights, profile):
     os.makedirs("outputs", exist_ok=True)
 
-    filename = f"outputs/{job['company']}_{job['title'].replace(' ', '_')}.txt"
+    company = safe_filename(job['company'])
+    title = safe_filename(job['title']).replace(" ", "_")
+
+    filename = f"outputs/{company}_{title}.txt"
 
     with open(filename, "w", encoding="utf-8") as f:
         f.write(f"Applying to: {job['title']} at {job['company']}\n")
