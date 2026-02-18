@@ -1,13 +1,24 @@
+import yaml
 from agent.brain import AutoJobAgent
 
 
-profile = """
-Name: Girish Belkar
-Skills: Python, FastAPI (learning), Data Analysis (learning), AI Enthusiast
-Goal: Entry-level AI / Data role
+def load_profile():
+    with open("config/user_profile.yaml", "r") as file:
+        return yaml.safe_load(file)
+
+
+profile_data = load_profile()
+
+profile_text = f"""
+Name: {profile_data['name']}
+Skills: {', '.join(profile_data['skills'])}
+Experience Level: {profile_data['experience_level']}
+Career Goal: {profile_data['career_goal']}
 """
 
+agent = AutoJobAgent(profile_text)
 
-agent = AutoJobAgent(profile)
-
-agent.run(role="Data Analyst", location="Mumbai")
+agent.run(
+    role=profile_data["target_role"],
+    location=profile_data["location"]
+)

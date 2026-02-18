@@ -1,17 +1,23 @@
 import os
+import requests
 from dotenv import load_dotenv
-from openai import OpenAI
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+API_KEY = os.getenv("HF_API_KEY")
+
+API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}"
+}
 
 
 def analyze_job(job, profile):
-    print("🤖 Using AI to analyze job...")
+    print("🤖 Using FREE HuggingFace model to analyze job...")
 
     prompt = f"""
-You are a career assistant AI.
+Analyze the job and candidate profile.
 
 JOB DESCRIPTION:
 {job['description']}
@@ -19,22 +25,27 @@ JOB DESCRIPTION:
 CANDIDATE PROFILE:
 {profile}
 
-Do the following:
-1. Extract key required skills.
-2. Compare with candidate profile.
-3. Identify missing skills.
-4. Write a short match evaluation.
+Provide:
+- Required skills
+- Matching skills
+- Missing skills
+- Short evaluation
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.3,
+    response = requests.post(
+        API_URL,
+        headers=headers,
+        json={"inputs": prompt}
     )
 
-    result = response.choices[0].message.content
+    result = response.json()
+
+    try:
+        text = result[0]["generated_text"]
+    except Exception:
+        text = str(result)
 
     return {
-        "match_summary": result,
-        "missing_skills": "See AI analysis above."
+        "match_summary": text,
+        "missing_skills": "Check analysis above."
     }
