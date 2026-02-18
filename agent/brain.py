@@ -1,6 +1,7 @@
 from agent.job_search import search_jobs
 from agent.analyzer import analyze_job
 from agent.resume_builder import build_application
+from agent.logger import log_job
 
 
 class AutoJobAgent:
@@ -16,11 +17,27 @@ class AutoJobAgent:
             print("❌ No jobs found.")
             return
 
+        SHORTLIST_THRESHOLD = 60
+
         for job in jobs:
             print(f"📄 Found Job: {job['title']} at {job['company']}")
 
             insights = analyze_job(job, self.profile)
+            score = insights.get("score", 50)
 
-            build_application(job, insights, self.profile)
+            print(f"📊 Match Score: {score}")
 
-        print("\n✅ All applications generated inside /outputs folder.")
+            if score >= SHORTLIST_THRESHOLD:
+                print("✅ Shortlisted\n")
+                log_job(job, score, "Shortlisted")
+
+                build_application(
+                    job,
+                    {"match_summary": insights["analysis"], "missing_skills": ""},
+                    self.profile
+                )
+            else:
+                print("❌ Skipped\n")
+                log_job(job, score, "Skipped")
+
+        print("\n🎯 Shortlisting completed.")

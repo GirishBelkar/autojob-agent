@@ -1,5 +1,6 @@
 import os
 import requests
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,45 +8,35 @@ load_dotenv()
 API_KEY = os.getenv("HF_API_KEY")
 
 API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"
-
-headers = {
-    "Authorization": f"Bearer {API_KEY}"
-}
+headers = {"Authorization": f"Bearer {API_KEY}"}
 
 
 def analyze_job(job, profile):
-    print("🤖 Using FREE HuggingFace model to analyze job...")
+    print("🤖 Analyzing job with AI...")
 
     prompt = f"""
-Analyze the job and candidate profile.
+Evaluate candidate match.
 
-JOB DESCRIPTION:
+JOB:
 {job['description']}
 
-CANDIDATE PROFILE:
+PROFILE:
 {profile}
 
-Provide:
-- Required skills
-- Matching skills
-- Missing skills
-- Short evaluation
+Return format:
+Score: <0-100>
+Explanation:
 """
 
-    response = requests.post(
-        API_URL,
-        headers=headers,
-        json={"inputs": prompt}
-    )
-
+    response = requests.post(API_URL, headers=headers, json={"inputs": prompt})
     result = response.json()
 
     try:
         text = result[0]["generated_text"]
-    except Exception:
+    except:
         text = str(result)
 
-    return {
-        "match_summary": text,
-        "missing_skills": "Check analysis above."
-    }
+    score_match = re.search(r"Score:\s*(\d+)", text)
+    score = int(score_match.group(1)) if score_match else 50
+
+    return {"score": score, "analysis": text}
