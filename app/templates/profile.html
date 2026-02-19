@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup Profile</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <h1>👤 Setup Your Profile</h1>
+</div>
+
+<div class="form-container">
+
+<form method="post" action="/save-profile">
+
+    <label>Full Name</label>
+    <input type="text" name="name" required>
+
+    <label>Target Role</label>
+    <input type="text" name="target_role" placeholder="Data Analyst" required>
+
+    <label>Preferred Location</label>
+    <input type="text" name="location" placeholder="Mumbai" required>
+
+    <label>Experience Level</label>
+    <select name="experience_level">
+        <option>Fresher</option>
+        <option>Entry Level</option>
+        <option>Mid Level</option>
+    </select>
+
+    <label>Skills (comma separated)</label>
+    <textarea name="skills" placeholder="Python, Excel, SQL"></textarea>
+
+    <label>Career Goal</label>
+    <textarea name="career_goal" placeholder="Become a Data Analyst"></textarea>
+
+    <button type="submit">Save Profile</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

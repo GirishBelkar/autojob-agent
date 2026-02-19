@@ -1,0 +1,19 @@
+📅 Learning Plan for 2026-02-19
+========================================
+
+🔹 Focus Skill: Excel
+   → Practice formulas + pivot tables
+
+🔹 Focus Skill: Aws
+   → Watch tutorial + take notes (45 min)
+
+🔹 Focus Skill: Sql
+   → Write SELECT queries (30 min)
+   → Practice JOIN + GROUP BY
+
+🔹 Focus Skill: Etl
+   → Watch tutorial + take notes (45 min)
+
+🔹 Focus Skill: Data Analysis
+   → Watch tutorial + take notes (45 min)
+

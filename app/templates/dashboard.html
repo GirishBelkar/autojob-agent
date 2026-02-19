@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoJob Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <h1>🤖 AutoJob Agent</h1>
+    <span class="tag">AI Career Intelligence</span>
+</div>
+
+<div class="container">
+
+    <!-- Learning Plan -->
+    <div class="card">
+        <h2>📚 Today's Learning Plan</h2>
+        <div class="content">
+            <pre>{{ learning }}</pre>
+        </div>
+    </div>
+
+    <!-- Run Agent -->
+    <div class="card">
+        <h2>⚙️ Run Job Scan</h2>
+        <p>Fetch latest market data instantly.</p>
+
+        <button class="run-btn" onclick="runAgent()">Run Scan</button>
+
+        <p id="status"></p>
+    </div>
+
+    <!-- System Status -->
+    <div class="card">
+        <h2>📊 System Status</h2>
+        <ul>
+            <li>✔ Job Scanner Active</li>
+            <li>✔ Skill Tracker Active</li>
+            <li>✔ Learning Planner Active</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+function runAgent() {
+    document.getElementById("status").innerText = "Running scan...";
+
+    fetch("/run-agent", {method: "POST"})
+        .then(() => {
+            document.getElementById("status").innerText =
+                "Scan started. Refresh in a few seconds.";
+        });
+}
+</script>
+
+</body>
+</html>

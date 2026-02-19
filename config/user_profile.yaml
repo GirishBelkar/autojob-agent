@@ -1,13 +1,18 @@
 name: Girish Belkar
+
+experience_level: Entry Level
+
+career_goal: Become an AI-powered Data Analyst
+
 target_role: Data Analyst
+
 location: Mumbai
 
 skills:
   - Python
-  - FastAPI
-  - Pandas
-  - AI Basics
-
-experience_level: Fresher
-
-career_goal: Looking to start a career in AI and Data Engineering.
+  - SQL (learning)
+  - Pandas (learning)
+  - Data Cleaning
+  - Excel
+  - FastAPI (basic)
+  - Machine Learning (beginner)
